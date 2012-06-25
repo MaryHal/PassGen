@@ -1,0 +1,80 @@
+#!/usr/bin/ruby -w
+
+require 'optparse'
+
+options = {}
+
+optparse = OptionParser.new do|opts|
+    opts.banner = "Usage: passgen [options] [number of passwords to generate]"
+
+    options[:numbers] = false
+    opts.on( '-n', '--numbers', 'Exclude numbers' ) do
+        options[:numbers] = true
+    end
+
+    options[:uppercase] = false
+    opts.on( '-u', '--uppercase', 'Exclude uppercase' ) do
+        options[:uppercase] = true
+    end
+
+    options[:lowercase] = false
+    opts.on( '-l', '--lowercase', 'Exclude lowercase' ) do
+        options[:lowercase] = true
+    end
+
+    options[:symbols] = false
+    opts.on( '-s', '--symbols', 'Exclude symbols' ) do
+        options[:symbols] = true
+    end
+
+    options[:ambiguous] = false
+    opts.on( '-a', '--ambiguous', 'Exclude (possibly) ambiguous' ) do
+        options[:ambiguous] = true
+    end
+
+    options[:quantity] = 1 
+    opts.on( '-q', '--quantity [num]', Integer, 'Number of passwords to generate' ) do|quantity|
+        options[:quantity] = quantity
+    end
+
+    opts.on( '-h', '--help', 'Display this screen' ) do
+        puts opts
+        exit
+    end
+end
+
+optparse.parse!
+
+def generate(charlist, length=10)
+    password = ''
+    (0..length).each do |i|
+        password << charlist[Random.rand(charlist.length)]
+    end
+    return password
+end
+
+if __FILE__ == $0
+    length = ARGV.length < 1 ? 10 : Integer(ARGV[0]) - 1
+
+    puts options
+    chars = ('!'..'~').to_a.join
+    puts chars
+
+    chars.sub!(/\p{Upper}+/,'') if options[:uppercase]
+    chars.sub!(/\p{Lower}+/,'') if options[:lowercase]
+    chars.sub!(/\p{Digit}+/,'') if options[:numbers]
+    chars.gsub!(/\p{Punct}+/,'') if options[:symbols]
+    chars.gsub!(/[1IlO0]+/  ,'') if options[:ambiguous]
+    puts chars
+
+    if chars.length == 0
+        puts "No characters left"
+        exit
+    end
+
+    puts
+
+    (0..options[:quantity] - 1).each do |i|
+        puts generate(chars, length)
+    end
+end
