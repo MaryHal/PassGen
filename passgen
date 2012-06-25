@@ -47,7 +47,7 @@ optparse.parse!
 
 def generate(charlist, length=10)
     password = ''
-    (0..length - 1).each do |i|
+    (0...length).each do |i|
         password << charlist[Random.rand(charlist.length)]
     end
     return password
@@ -74,7 +74,7 @@ if __FILE__ == $0
 
     puts
 
-    (0..options[:quantity] - 1).each do |i|
+    (0...options[:quantity]).each do |i|
         puts generate(chars, length)
     end
 end
