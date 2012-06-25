@@ -4,6 +4,7 @@ require 'optparse'
 
 options = {}
 
+# Parse command line options
 optparse = OptionParser.new do|opts|
     opts.banner = "Usage: passgen [options] [number of passwords to generate]"
 
@@ -45,6 +46,7 @@ end
 
 optparse.parse!
 
+# Generates a password
 def generate(charlist, length=10)
     password = ''
     (0...length).each do |i|
@@ -53,28 +55,30 @@ def generate(charlist, length=10)
     return password
 end
 
+def buildCharList(options)
+    charlist = ('!'..'~').to_a.join
+    charlist.sub!(/\p{Upper}+/,'') if options[:uppercase]
+    charlist.sub!(/\p{Lower}+/,'') if options[:lowercase]
+    charlist.sub!(/\p{Digit}+/,'') if options[:numbers]
+    charlist.gsub!(/\p{Punct}+/,'') if options[:symbols]
+    charlist.gsub!(/[1IlO0]+/  ,'') if options[:ambiguous]
+
+    return charlist;
+end
+
+# Main script
 if __FILE__ == $0
-    length = ARGV.length < 1 ? 10 : Integer(ARGV[0])
+    charlist = buildCharList(options)
 
-    puts options
-    chars = ('!'..'~').to_a.join
-    puts chars
-
-    chars.sub!(/\p{Upper}+/,'') if options[:uppercase]
-    chars.sub!(/\p{Lower}+/,'') if options[:lowercase]
-    chars.sub!(/\p{Digit}+/,'') if options[:numbers]
-    chars.gsub!(/\p{Punct}+/,'') if options[:symbols]
-    chars.gsub!(/[1IlO0]+/  ,'') if options[:ambiguous]
-    puts chars
-
-    if chars.length == 0
-        puts "No characters left"
+    # If so many exclusion switches are turned on, we won't have any 
+    # password characters to make passwords with.
+    if charlist.length <= 0
+        puts "Too many characters excluded."
         exit
     end
 
-    puts
-
+    passLength = ARGV.length < 1 ? 10 : Integer(ARGV[0])
     (0...options[:quantity]).each do |i|
-        puts generate(chars, length)
+        puts generate(charlist, passLength)
     end
 end
