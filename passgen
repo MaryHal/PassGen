@@ -73,7 +73,7 @@ if __FILE__ == $0
     # If so many exclusion switches are turned on, we won't have any 
     # password characters to make passwords with.
     if charlist.length <= 0
-        puts "Too many characters excluded."
+        puts "No characters left in character pool."
         exit
     end
 
