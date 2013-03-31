@@ -5,8 +5,8 @@ Randomly generate simple passwords.
 
 Help
 ====
-`
-Usage: passgen [options] [length of passwords to generate]
+
+    Usage: passgen [options] [length of passwords to generate]
     -n, --numbers                    Exclude numbers
     -u, --uppercase                  Exclude uppercase
     -l, --lowercase                  Exclude lowercase
@@ -14,12 +14,10 @@ Usage: passgen [options] [length of passwords to generate]
     -a, --ambiguous                  Exclude (possibly) ambiguous
     -q, --quantity [num]             Number of passwords to generate
     -h, --help                       Display this screen
-`
 
 
 Example Output
 ==============
-`
 Generate 10 passwords of length 10 disallowing uppercase letters and ambiguous letters.
     ./passgen -uaq10 10
     >\u/}k8pfv
@@ -45,4 +43,4 @@ Generate 10 passwords of length 20 disallowing symbols and ambiguous characters.
     JGuLrBd82Y8dFkEkTj59
     iN8D7xMrkwk6im3bivx2
     z7drYXo4gwKc3A9AtJ46
-`
+
