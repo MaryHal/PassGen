@@ -6,7 +6,7 @@ options = {}
 
 # Parse command line options
 optparse = OptionParser.new do|opts|
-    opts.banner = "Usage: passgen [options] [number of passwords to generate]"
+    opts.banner = "Usage: passgen [options] [length of passwords to generate]"
 
     options[:numbers] = false
     opts.on( '-n', '--numbers', 'Exclude numbers' ) do
@@ -33,7 +33,7 @@ optparse = OptionParser.new do|opts|
         options[:ambiguous] = true
     end
 
-    options[:quantity] = 1 
+    options[:quantity] = 1
     opts.on( '-q', '--quantity [num]', Integer, 'Number of passwords to generate' ) do|quantity|
         options[:quantity] = quantity
     end
@@ -60,7 +60,7 @@ def buildCharList(options)
     charlist.sub!(/\p{Upper}+/,'') if options[:uppercase]
     charlist.sub!(/\p{Lower}+/,'') if options[:lowercase]
     charlist.sub!(/\p{Digit}+/,'') if options[:numbers]
-    charlist.gsub!(/\p{Punct}+/,'') if options[:symbols]
+    charlist.gsub!(/[\W_]+/,'') if options[:symbols]
     charlist.gsub!(/[1IlO0]+/  ,'') if options[:ambiguous]
 
     return charlist;
@@ -70,7 +70,7 @@ end
 if __FILE__ == $0
     charlist = buildCharList(options)
 
-    # If so many exclusion switches are turned on, we won't have any 
+    # If so many exclusion switches are turned on, we won't have any
     # password characters to make passwords with.
     if charlist.length <= 0
         puts "No characters left in character pool."
