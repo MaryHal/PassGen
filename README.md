@@ -19,6 +19,7 @@ Help
 Example Output
 ==============
 Generate 10 passwords of length 10 disallowing uppercase letters and ambiguous letters.
+
     ./passgen -uaq10 10
     >\u/}k8pfv
     =tzo&*=jf?
@@ -32,6 +33,7 @@ Generate 10 passwords of length 10 disallowing uppercase letters and ambiguous l
     |hm=8+zq3-
 
 Generate 10 passwords of length 20 disallowing symbols and ambiguous characters.
+
     ./passgen -saq10 20
     6m3HVZN7fZYdScyXyUyV
     WGkKjpuHNqXYNweXEPMr
